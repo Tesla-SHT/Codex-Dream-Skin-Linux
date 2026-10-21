@@ -2,7 +2,9 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd -P)"
 NODE="${NODE:-$(command -v node)}"
-[ -x "$NODE" ] || { printf 'node was not found. Install nodejs (>= 22) first.\n' >&2; exit 1; }
+# Accept either an absolute path or a bare command name (CI sets NODE=node).
+if [ ! -x "$NODE" ]; then NODE="$(command -v "$NODE" 2>/dev/null || true)"; fi
+[ -n "$NODE" ] && [ -x "$NODE" ] || { printf 'node was not found. Install nodejs (>= 22) first.\n' >&2; exit 1; }
 NODE_MAJOR="$("$NODE" -p 'process.versions.node.split(".")[0]' || printf 0)"
 [ "$NODE_MAJOR" -ge 22 ] || { printf 'node >= 22 is required (deb Depends: nodejs >= 22), found: %s\n' "$("$NODE" --version)" >&2; exit 1; }
 

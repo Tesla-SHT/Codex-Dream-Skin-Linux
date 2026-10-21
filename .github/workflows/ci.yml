@@ -76,7 +76,4 @@ jobs:
 
       - name: Run Linux test suite
         shell: bash
-        env:
-          NODE: node
-          DREAMSKIN_PYTHON: python3
         run: bash linux/tests/run-tests.sh
