@@ -39,8 +39,9 @@ jobs:
           while IFS= read -r file; do
             bash -n "$file"
           done < <(find linux -type f -name '*.sh' ! -path '*/release/*' -print)
-          for file in linux/installer/{postinst,prerm,postrm,preinst}; do
-            [ -f "$file" ] && bash -n "$file"
+          for file in linux/installer/postinst linux/installer/prerm \
+                      linux/installer/postrm linux/installer/preinst; do
+            if [ -f "$file" ]; then bash -n "$file"; fi
           done
 
       - name: Check Node.js syntax
