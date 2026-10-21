@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Dream Skin Settings
+Name[zh_CN]=Dream Skin 壁纸设置
+Comment=Wallpaper visibility and transparency for ChatGPT
+Comment[zh_CN]=调整壁纸透明度、背景图片和皮肤开关
+Exec=dreamskin settings
+Icon=preferences-desktop-wallpaper
+Terminal=false
+Categories=Settings;DesktopSettings;
+Keywords=wallpaper;theme;opacity;transparency;ChatGPT;
+StartupWMClass=DreamSkinSettings

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=Dream Skin
+Comment=External themes for Codex desktop
+Exec=dreamskin
+Terminal=true
+Categories=Utility;Development;
+Actions=Settings;
+
+[Desktop Action Settings]
+Name=Wallpaper settings
+Name[zh_CN]=壁纸设置
+Exec=dreamskin settings

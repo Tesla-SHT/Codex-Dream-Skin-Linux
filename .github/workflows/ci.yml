@@ -1,0 +1,81 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  linux:
+    name: Linux checks and tests (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22, 24]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install GUI test dependency
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq python3-tk
+
+      - name: Check shell syntax
+        shell: bash
+        run: |
+          while IFS= read -r file; do
+            bash -n "$file"
+          done < <(find linux -type f -name '*.sh' ! -path '*/release/*' -print)
+          for file in linux/installer/{postinst,prerm,postrm,preinst}; do
+            [ -f "$file" ] && bash -n "$file"
+          done
+
+      - name: Check Node.js syntax
+        shell: bash
+        run: |
+          while IFS= read -r file; do
+            node --check "$file" >/dev/null
+          done < <(
+            find runtime tools linux/scripts linux/assets \
+              -type f \( -name '*.mjs' -o -name '*.js' \) -print
+          )
+
+      - name: Check Python syntax
+        shell: bash
+        run: |
+          python3 -m py_compile linux/scripts/settings-panel.py
+          python3 -m py_compile linux/tests/settings-panel.test.py
+
+      - name: Check version consistency
+        shell: bash
+        run: |
+          expected="$(tr -d '\r\n' < linux/VERSION)"
+          linux_common="$(sed -n 's/^SKIN_VERSION="\([^"]*\)"$/\1/p' linux/scripts/common-linux.sh)"
+          linux_injector="$(sed -n 's/^const SKIN_VERSION = "\([^"]*\)";$/\1/p' linux/scripts/injector.mjs)"
+          test -n "$expected"
+          test "$linux_common" = "$expected"
+          test "$linux_injector" = "$expected"
+
+      - name: Check runtime assets are in sync
+        shell: bash
+        run: node tools/sync-runtime-assets.mjs --check
+
+      - name: Run Linux test suite
+        shell: bash
+        env:
+          NODE: node
+          DREAMSKIN_PYTHON: python3
+        run: bash linux/tests/run-tests.sh
