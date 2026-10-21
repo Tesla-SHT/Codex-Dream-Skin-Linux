@@ -11,6 +11,10 @@
   <a href="./LINUX-FIX-NOTES.md">修复与改动记录</a>
 </p>
 
+<p align="center">
+  <a href="https://github.com/Tesla-SHT/Codex-Dream-Skin-Linux/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Tesla-SHT/Codex-Dream-Skin-Linux/actions/workflows/ci.yml/badge.svg"></a>
+</p>
+
 > **非 OpenAI 官方产品。** 本工具不修改 `.deb`、`app.asar` 或任何官方文件，
 > 只在本机回环地址上通过 Chrome DevTools Protocol 注入 CSS 与少量渲染逻辑。
 
