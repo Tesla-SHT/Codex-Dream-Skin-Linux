@@ -142,7 +142,10 @@ dreamskin status             # 查看状态
 
 | 现象 | 处理 |
 | --- | --- |
+| 双击 Codex 图标打开没有皮肤 | 皮肤依赖本机调试端口，普通启动不会带；请用 `dreamskin start`（菜单 1）启动。可把 Dream Skin 固定到任务栏当启动器 |
+| 点菜单 1 后终端窗口一闪就没了 | 多半是 Codex 已在运行、且不是带端口的实例。菜单会询问是否重启；直接命令行启动请加 `--restart-existing` |
 | 首页正常、点开对话黑屏 | 本仓库已修复；确认用的是本仓库资产并重新 `dreamskin start` |
+| 皮肤在但背景图几乎看不见 | 检查是不是把透明度调得太高：`dreamskin wallpaper opacity 50`，或在设置面板点「恢复 50%」 |
 | `找不到官方应用` / 版本校验失败 | `sudo apt update`，确认 `dpkg -l chatgpt` 有记录 |
 | 面板打不开或提示缺 tkinter | `sudo apt install python3-tk` |
 | `ChatGPT is already running without ... CDP endpoint` | 先完全退出 ChatGPT，或加 `--restart-existing` |

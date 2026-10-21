@@ -80,7 +80,14 @@ menu_loop() {
     case "$key" in
       '') printf ' 无效选择：%s\n' "$choice"; continue ;;
     esac
-    dispatch "$key" || continue
+    # The menu always has a TTY, so it can ask before force-restarting an
+    # already-running Codex. Without this the click just failed and the
+    # Terminal=true launcher window vanished before the reason was readable.
+    if [ "$key" = "start" ]; then
+      dispatch start --prompt-restart || continue
+    else
+      dispatch "$key" || continue
+    fi
   done
 }
 
