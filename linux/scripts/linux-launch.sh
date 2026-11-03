@@ -169,7 +169,7 @@ discover_codex_app() {
 
   # 2. PATH binary (AppImage / manually added)
   if [ -z "${CODEX_EXE:-}" ]; then
-    candidate="$(command -v codex-desktop 2>/dev/null || command -v chatgpt-desktop 2>/dev/null || true)"
+    candidate="$(command -v codex-desktop 2>/dev/null || command -v chatgpt-desktop 2>/dev/null || command -v chatgpt 2>/dev/null || true)"
     if [ -n "$candidate" ] && [ -x "$candidate" ]; then
       CODEX_EXE="$(readlink -f "$candidate")"
       CODEX_VERSION="unknown"
